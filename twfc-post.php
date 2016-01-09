@@ -27,7 +27,17 @@ function add_admin_menu_twfc(){
 
 
 
-function action_twfc($param) {
+function action_twfc() 
+{
+    global $post, $wpdb;   
+    
+    // incluir o arquivo que trata 
+    // as requisições do formulario
+    require_once TWFC_PATH.DS.'requests.php';
+    
+    
+    $form = new Requests();
+    $form->varPost();
     
     // incluir o arquivo com o formulario 
     require_once VIEWS_PATH.'default.php';
