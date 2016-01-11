@@ -17,10 +17,13 @@ $optionApp = get_option('twfc_app');
  
 $fc_appid                = $optionApp['facebookappid'] ? $optionApp['facebookappid'] : '';
 $fc_appsecret            = $optionApp['facebookappsecret'] ? $optionApp['facebookappsecret'] : '' ;
-$tw_accesstoken           = $optionApp['twitteraccesstoken'] ? $optionApp['twitteraccesstoken'] : '' ;
-$tw_accesstokensecret     = $optionApp['twitteraccesstokensecret'] ? $optionApp['twitteraccesstokensecret'] : '';
-$tw_consumerkey           = $optionApp['twitterconsumer'] ? $optionApp['twitterconsumer'] : '';
-$tw_consumersecret        = $optionApp['twitterconsumersecret'] ? $optionApp['twitterconsumersecret'] : '';
+
+$optionAppTwitter = get_option('twfc_app_twitter');
+
+$tw_accesstoken           = $optionAppTwitter['twitteraccesstoken'] ? $optionAppTwitter['twitteraccesstoken'] : '' ;
+$tw_accesstokensecret     = $optionAppTwitter['twitteraccesstokensecret'] ? $optionAppTwitter['twitteraccesstokensecret'] : '';
+$tw_consumerkey           = $optionAppTwitter['twitterconsumer'] ? $optionAppTwitter['twitterconsumer'] : '';
+$tw_consumersecret        = $optionAppTwitter['twitterconsumersecret'] ? $optionAppTwitter['twitterconsumersecret'] : '';
 
 $url        = 'admin.php?page=twfc-post'
 ?>
@@ -43,14 +46,10 @@ $url        = 'admin.php?page=twfc-post'
             <div id="post-body-content">
                 
                 <h2>TWFC POST - Postagerm automática no Twitter e Facebbok</h2>
-                
-                <form method="post" action="<?php echo $url; ?>" id="addimage" name="addimage"  enctype="multipart/form-data" encoding="multipart/form-data">
                     <?php
                     require_once VIEWS_PATH.'facebook.php';
                     require_once VIEWS_PATH.'twitter.php';    
                     ?>
-                    <input type="submit" name="save" id="btnsave" value="Salvar" class="button-primary" />   
-                </form>
                 
             </div>
             
