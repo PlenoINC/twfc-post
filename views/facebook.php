@@ -29,5 +29,12 @@
                 </tr>
             </tbody>
         </table>
+        
+         <?php 
+         $optionFace = get_option('twfc_login_facebook'); 
+         if($optionFace['btnfacebook']){
+             echo $optionFace['btnfacebook'];
+         }
+         ?>
     </div>
 </div>
