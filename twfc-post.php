@@ -47,7 +47,7 @@ function action_twfc()
 }
 
 function auto_post_twfc($post_ID)  {
-    
+        
     $post_title         = get_the_title( $post_ID ); // titulo do post
     $post_url           = get_permalink( $post_ID ); // url da post        
     $redirect_uri       = get_edit_post_link(); // url de retorno / url do post
@@ -59,11 +59,7 @@ function auto_post_twfc($post_ID)  {
     $postpp             = get_post($post_ID);
     $post_description   = strip_tags($postpp->post_content); // conteudo do post
     
-    // inclui o arquivo para iniciar as classes facebook
-    require_once FC_PATH.'twfcfacebook.php';
-    
-    $postFace = new Twfcfacebook();
-    
+    // array  com o conteudo do post
     $array = array(
         'titulo'        => $post_title,
         'url'           => $post_url,
@@ -73,9 +69,15 @@ function auto_post_twfc($post_ID)  {
         
     );
     
-   $return = $postFace->postFacebook($array);
-   
-   var_dump($return);   
+    // inclui o arquivo para iniciar as classes facebook
+    require_once FC_PATH.'twfcfacebook.php';    
+    $postFace = new Twfcfacebook();
+    $postFace->postFacebook($array);
+    
+    // inclui o arquivo para iniciar as classes twiiter
+    require_once TW_PATH.'twfctwitter.php';   
+    $postTwitter = new Twfctwitter();
+    $postTwitter->postTwitter($array);
     
 }
 

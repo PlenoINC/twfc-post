@@ -3,9 +3,9 @@ session_start();
 
 require_once( FC_PATH.'vendor'.DS.'autoload.php' );
 
-use Facebook\FacebookSession;
-use Facebook\FacebookRedirectLoginHelper;
-use Facebook\FacebookRequest;
+//use Facebook\FacebookSession;
+//use Facebook\FacebookRedirectLoginHelper;
+//use Facebook\FacebookRequest;
 
 class Twfcfacebook{
     
@@ -14,54 +14,41 @@ class Twfcfacebook{
         // pega os dados do facebook  
         $optionApp = get_option('twfc_app');                 
         
-        // inciando o SDK
-        FacebookSession::setDefaultApplication($optionApp['facebookappid'], $optionApp['facebookappsecret']);
-        
-        // url de retorno
-        $redirect_uri = admin_url('admin.php?page=twfc-post');
-        $helper = new FacebookRedirectLoginHelper( $redirect_uri );
+        $fb = new Facebook\Facebook([
+            'app_id' => $optionApp['facebookappid'],
+            'app_secret' => $optionApp['facebookappsecret'],
+            'default_graph_version' => 'v2.2',                
+        ]);
         
         // pega o token salvo 
-        $sessionApp = get_option('twfcfacebook_token'); 
+        $access_token = get_option('twfcfacebook_token'); 
         
+        $linkData = array(
+            'name'          => $array['titulo'],
+            'caption'       => $array['url'],
+            'link'          => $array['url'],
+            //'message' => 'Verificando integração entre Facebook e o website.',
+            'picture'       => $array['imagem'],
+            'description'   => $array['conteudo']
+        );
         
-        if(isset($sessionApp['fb_token']) ){
-            $token = $sessionApp['fb_token'];
-        }
-        
-        
-        $session = new FacebookSession( $token );
-        
-        // Validar o token de acesso para se certificar de que ainda é válido
         try {
-            if ( ! $session->validate() ) {
-                $session = null;
-            }
-        } catch ( Exception $e ) {
-            // Capturar quaisquer exceções
-            $session = null;
-        }
-        
-        // Check if a session exists
-        if ( isset( $session ) ) {
-           
-            // Graph API para publicar em linha do tempo com parâmetros adicionais
-            $request = (new FacebookRequest( $session, 'POST', '/me/feed', array(
-                'name'          => $array['titulo'],
-                'caption'       => $array['url'],
-                'link'          => $array['url'],
-                //'message' => 'Verificando integração entre Facebook e o website.',
-                'picture'       => $array['imagem'],
-                'description'   => $array['conteudo']
-             )))->execute();
+            // Returns a `Facebook\FacebookResponse` object
+            $response = $fb->post('/me/feed', $linkData, $access_token['fb_token']);
             
-            // Obter resposta como uma matriz, retorna ID de pós
-            $response = $request->getGraphObject()->asArray();
-        }  else {
+        } catch(Facebook\Exceptions\FacebookResponseException $e) {
+            echo 'Graph returned an error: ' . $e->getMessage();
+            exit;
+            
+        } catch(Facebook\Exceptions\FacebookSDKException $e) {
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            exit;
             
         }
         
-        return $response;
+        $graphNode = $response->getGraphNode();
+        
+        return $graphNode;
     }
     
 }

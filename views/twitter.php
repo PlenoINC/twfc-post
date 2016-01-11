@@ -4,7 +4,9 @@
  * (c) Reinaldo Rodrigues <contato@reinaldorodrigues.com.br>  * 
  * 
  */
+$url        = 'admin.php?page=twfc-post';
 ?>
+<form method="post" action="<?php echo $url; ?>" id="addimage" name="addimage"  enctype="multipart/form-data" encoding="multipart/form-data">
 <div class="stuffbox" id="namediv" style="width:100%;">
     <div class="inside">
         <h2>Twitter</h2>
@@ -46,5 +48,8 @@
                 
             </tbody>
         </table>
+        <input type="submit" name="save" id="btnsave" style="width: 150px; margin-right: 15px;"  value="Salvar" class="button-primary" />
+         <input type="hidden" name="action" value="form-twitter" />
     </div>
 </div>
+</form>    
