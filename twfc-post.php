@@ -75,7 +75,7 @@ function auto_post_twfc($post_ID)  {
     
    $return = $postFace->postFacebook($array);
    
-   var_dump($return);   
+   //var_dump($return);   
     
 }
 
